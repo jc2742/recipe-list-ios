@@ -49,13 +49,13 @@ class RecipeCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with recipe: Recipe) {
-        recipeImage.sd_setImage(with: URL(string: recipe.image_url))
-        recipeName.text = recipe.name
-        rating.text = "\(recipe.rating) •"
+        recipeImage.sd_setImage(with: URL(string: recipe.image_url ?? "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"))
+        recipeName.text = recipe.title
+        rating.text = "\(recipe.rating ?? 2) •"
         difficulty.text = recipe.difficulty
         let bookmarkedArr = UserDefaults.standard.array(forKey: "bookmarked") as? [String] ?? []
         
-        if bookmarkedArr.contains(recipe.name){
+        if bookmarkedArr.contains(recipe.title ?? ""){
             bookmarked.isHidden = false
         }else{
             bookmarked.isHidden = true

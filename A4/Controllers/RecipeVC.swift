@@ -19,6 +19,9 @@ class RecipeVC: UIViewController {
     let recipeDescriptionLabel = UILabel()
     let bookmark = UIBarButtonItem()
     let backButton = UIBarButtonItem()
+    let recipeListLabel = UILabel()
+    let recipeInstructionLabel = UILabel()
+   
     
     // MARK: - Properties (Data)
     var recipe: Recipe?
@@ -35,6 +38,8 @@ class RecipeVC: UIViewController {
         setupRecipeDescriptionLabel()
         setupBookmarkButton()
         setupBackButton()
+        setupRecipeListLabel()
+        setupRecipeInstructionLabel()
         
         configureViewsWithRecipe()
     }
@@ -123,6 +128,38 @@ class RecipeVC: UIViewController {
             recipeDescriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16) // Ensure it does not extend beyond the safe area
         ])
     }
+    private func setupRecipeListLabel() {
+        recipeListLabel.font = UIFont.systemFont(ofSize: 16)
+        recipeListLabel.numberOfLines = 0
+        recipeListLabel.textAlignment = .left
+        recipeListLabel.textColor = UIColor.a4.silver
+        view.addSubview(recipeListLabel)
+        
+        // Setup constraints
+        recipeListLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            recipeListLabel.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor, constant: 24),
+            recipeListLabel.leadingAnchor.constraint(equalTo: recipeDescriptionLabel.leadingAnchor ),
+            recipeListLabel.trailingAnchor.constraint(equalTo: recipeNameLabel.trailingAnchor),
+            recipeListLabel.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16) // Ensure it does not extend beyond the safe area
+        ])
+    }
+    private func setupRecipeInstructionLabel() {
+        recipeInstructionLabel.font = UIFont.systemFont(ofSize: 16)
+        recipeInstructionLabel.numberOfLines = 0
+        recipeInstructionLabel.textAlignment = .left
+        recipeInstructionLabel.textColor = UIColor.a4.silver
+        view.addSubview(recipeInstructionLabel)
+        
+        // Setup constraints
+        recipeInstructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            recipeInstructionLabel.topAnchor.constraint(equalTo: recipeListLabel.bottomAnchor, constant: 24),
+            recipeInstructionLabel.leadingAnchor.constraint(equalTo: recipeListLabel.leadingAnchor ),
+            recipeInstructionLabel.trailingAnchor.constraint(equalTo: recipeListLabel.trailingAnchor),
+            recipeInstructionLabel.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16) // Ensure it does not extend beyond the safe area
+        ])
+    }
     
     private func setupBookmarkButton() {
         bookmark.image = UIImage(systemName: "bookmark")
@@ -135,9 +172,11 @@ class RecipeVC: UIViewController {
     // MARK: - Configure
     private func configureViewsWithRecipe() {
         guard let recipe = recipe else { return }
-        recipeImageView.sd_setImage(with: URL(string: recipe.image_url))
-        recipeNameLabel.text = recipe.name
+        recipeImageView.sd_setImage(with: URL(string: recipe.image_url ?? "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"))
+        recipeNameLabel.text = recipe.title
         recipeDescriptionLabel.text = recipe.description
-        updateBookmark(recipe: recipe.name)
+        recipeListLabel.text = "Ingredients: \(recipe.ingredients)"
+        recipeInstructionLabel.text = "Instruction: \(recipe.directions ?? "")"
+        updateBookmark(recipe: recipe.title ?? "")
     }
 }

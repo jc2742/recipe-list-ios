@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     
     // MARK: - Properties (data)
     
-    let filters = ["All", "Beginner", "Intermediate","Advanced"]
+    let filters = ["All", "beginner", "Intermediate","Advanced"]
     
     private var recipes: [Recipe] = [
         
@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     // MARK: - viewDidLoad
 
     override func viewDidLoad() {
-        title = "Chef OS"
+        title = "Recipe List"
         
         view.backgroundColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 32, weight: .bold)]
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         let activeFilters = UserDefaults.standard.array(forKey: "activeFilters") as? [String] ?? []
         
         let filteredRecipes = recipes.filter { recipe in
-            return (activeFilters.contains(recipe.difficulty) || activeFilters.contains("All") || activeFilters.count == 0)
+            return (activeFilters.contains(recipe.difficulty ?? "") || activeFilters.contains("All") || activeFilters.count == 0)
         }
         return filteredRecipes
     }
@@ -52,13 +52,14 @@ class ViewController: UIViewController {
             guard let self = self else { return }
             self.recipes = recipes
             print(recipes)
-            
+
             // Perform UI update on main queue
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
                 self.refreshControl.endRefreshing()
             }
         }
+        
     }
     
     
